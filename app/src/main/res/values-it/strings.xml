@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Impostazioni</string>
+    <string name="str_photo_detail_left_photo_label">Sinistra</string>
+    <string name="str_photo_detail_right_photo_label">Destra</string>
+    <string name="str_photo_detail_left_photo_change_button">Cambia</string>
+    <string name="str_photo_detail_right_photo_change_button">Cambia</string>
+    <string name="str_photo_detail_save_button">Salva</string>
+    <string name="str_folder_list_row_title">Nome Cartella</string>
+    <string name="str_folder_list_row_button_edit">Modifica</string>
+    <string name="str_folder_list_row_button_delete">Cancella</string>
+    <string name="str_photo_detail_cancel_button">Cancella</string>
+    <string name="str_action_language">Lingua</string>
+    <string name="str_photo_detail_name_label">Nome</string>
+    <string name="str_snackbar_mandatory_name">Il nome è obbligatorio</string>
+    <string name="str_snackbar_mandatory_photos">Le foto sono obbligatorie</string>
+    <string name="str_snackbar_directory_exists">La cartella esiste già</string>
+    <string name="str_snackbar_unable_save_photos">Impossibile salvare le foto</string>
+</resources>

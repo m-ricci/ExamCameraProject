@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name" translatable="false">Camera Project</string>
+    <string name="str_photo_detail_name_label">Name</string>
+    <string name="str_photo_detail_left_photo_label">Left</string>
+    <string name="str_photo_detail_right_photo_label">Right</string>
+    <string name="str_photo_detail_left_photo_change_button">Change</string>
+    <string name="str_photo_detail_right_photo_change_button">Change</string>
+    <string name="str_photo_detail_save_button">Save</string>
+    <string name="str_folder_list_row_title">Folder Name</string>
+    <string name="str_folder_list_row_button_edit">Edit</string>
+    <string name="str_folder_list_row_button_delete">Delete</string>
+    <string name="str_photo_detail_cancel_button">Cancel</string>
+    <string name="str_action_language">Language</string>
+    <string name="str_action_language_polish" translatable="false">Polish</string>
+    <string name="str_action_language_english" translatable="false">English</string>
+    <string name="str_action_language_italian" translatable="false">Italian</string>
+    <string name="action_settings">Settings</string>
+    <string name="photo_detail_description_zoom_touch_close" translatable="false">zoom touch</string>
+    <string name="str_snackbar_mandatory_name">Name is mandatory</string>
+    <string name="str_snackbar_mandatory_photos">Photos are mandatory</string>
+    <string name="str_snackbar_directory_exists">Directory already exists</string>
+    <string name="str_snackbar_unable_save_photos">Unable to save photos</string>
+</resources>

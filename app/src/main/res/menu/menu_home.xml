@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="project.karolina.com.cameraproject.HomeActivity">
+    <item
+        android:id="@+id/action_new_photo"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_language"
+        android:title="@string/str_action_language">
+        <menu>
+            <item
+                android:id="@+id/action_language_polish"
+                android:icon="@mipmap/ic_icon_poland_foreground"
+                android:title="@string/str_action_language_polish" />
+            <item
+                android:id="@+id/action_language_english"
+                android:icon="@mipmap/ic_icon_england_foreground"
+                android:title="@string/str_action_language_english" />
+            <item
+                android:id="@+id/action_language_italian"
+                android:icon="@mipmap/ic_icon_italy_foreground"
+                android:title="@string/str_action_language_italian" />
+        </menu>
+    </item>
+</menu>

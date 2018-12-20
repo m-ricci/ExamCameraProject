@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Ustawienia</string>
+    <string name="str_photo_detail_left_photo_label">Lewa</string>
+    <string name="str_photo_detail_right_photo_label">Prawa</string>
+    <string name="str_photo_detail_left_photo_change_button">Zmień</string>
+    <string name="str_photo_detail_right_photo_change_button">Zmień</string>
+    <string name="str_photo_detail_save_button">Zapisz</string>
+    <string name="str_folder_list_row_title">Nazwa Folderu</string>
+    <string name="str_folder_list_row_button_edit">Edytuj</string>
+    <string name="str_folder_list_row_button_delete">Usuń</string>
+    <string name="str_photo_detail_cancel_button">Anuluj</string>
+    <string name="str_action_language">Język</string>
+    <string name="str_photo_detail_name_label">Nazwa</string>
+    <string name="str_snackbar_mandatory_name">Nazwa obowiązkowa</string>
+    <string name="str_snackbar_mandatory_photos">Zdjęcia obowiązkowe</string>
+    <string name="str_snackbar_directory_exists">Folder o tej nazwie już istnieje</string>
+    <string name="str_snackbar_unable_save_photos">Zapisanie zdjęć niemożliwe</string>
+</resources>
