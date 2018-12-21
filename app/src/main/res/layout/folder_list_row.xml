@@ -8,32 +8,36 @@
 
     <TextView
         android:id="@+id/folder_list_row_title"
-        android:layout_width="0dp"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/folder_list_row_button_edit"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/folder_list_row_button_edit"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/str_folder_list_row_title" />
 
-    <Button
+    <ImageButton
         android:id="@+id/folder_list_row_button_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="@string/str_folder_list_row_button_edit"
-        app:layout_constraintBaseline_toBaselineOf="@+id/folder_list_row_button_delete"
-        app:layout_constraintEnd_toStartOf="@+id/folder_list_row_button_delete" />
+        android:contentDescription="@string/str_folder_list_row_button_edit"
+        android:src="@android:drawable/ic_menu_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/image_list_row_button_delete"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/folder_list_row_button_delete"
+    <ImageButton
+        android:id="@+id/image_list_row_button_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/str_folder_list_row_button_delete"
+        android:contentDescription="@string/str_folder_list_row_button_delete"
+        android:src="@android:drawable/ic_menu_delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

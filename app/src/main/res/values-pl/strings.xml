@@ -16,4 +16,10 @@
     <string name="str_snackbar_mandatory_photos">Zdjęcia obowiązkowe</string>
     <string name="str_snackbar_directory_exists">Folder o tej nazwie już istnieje</string>
     <string name="str_snackbar_unable_save_photos">Zapisanie zdjęć niemożliwe</string>
+    <string name="str_new_person_input_description">Insert the name of the person you want to store the pictures of the hands</string>
+    <string name="str_new_person_name_input">Nazwa</string>
+    <string name="str_new_person_save_button">Zapisz</string>
+    <string name="str_new_person_cancel_button">Anuluj</string>
+    <string name="str_photo_detail_add_button">Add</string>
+    <string name="str_image_list_row_photo">Image</string>
 </resources>

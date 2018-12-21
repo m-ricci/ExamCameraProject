@@ -9,39 +9,98 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/photo_detail_expanded_image">
 
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/photo_detail_container_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             tools:context=".PhotoDetailActivity">
 
             <TextView
-                android:id="@+id/photo_detail_name_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="@string/str_photo_detail_name_label"
-                app:layout_constraintBaseline_toBaselineOf="@+id/photo_detail_name_input"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <EditText
-                android:id="@+id/photo_detail_name_input"
+                android:id="@+id/photo_detail_name_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/str_photo_detail_name_label"
-                android:inputType="textPersonName"
+                android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/photo_detail_name_label"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/str_photo_detail_name_label" />
+
+            <TextView
+                android:id="@+id/photo_detail_left_photo_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/str_photo_detail_left_photo_label"
+                app:layout_constraintEnd_toStartOf="@+id/photo_detail_left_add_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/photo_detail_name_value" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/photo_detail_left_photo_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/photo_detail_left_photo_label" />
+
+            <TextView
+                android:id="@+id/photo_detail_right_photo_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/str_photo_detail_right_photo_label"
+                app:layout_constraintBaseline_toBaselineOf="@+id/photo_detail_left_photo_label"
+                app:layout_constraintEnd_toStartOf="@+id/photo_detail_right_add_button"
+                app:layout_constraintStart_toEndOf="@+id/photo_detail_left_add_button" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/photo_detail_right_photo_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/photo_detail_right_photo_label" />
+
+            <ImageButton
+                android:id="@+id/photo_detail_right_add_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:contentDescription="@string/str_photo_detail_add_button"
+                android:src="@android:drawable/ic_input_add"
+                app:layout_constraintBottom_toTopOf="@+id/photo_detail_right_photo_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/photo_detail_name_value" />
+
+            <ImageButton
+                android:id="@+id/photo_detail_left_add_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/str_photo_detail_add_button"
+                android:src="@android:drawable/ic_input_add"
+                app:layout_constraintBottom_toTopOf="@+id/photo_detail_left_photo_list"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/photo_detail_name_value" />
 
             <android.support.constraint.Guideline
                 android:id="@+id/guideline"
@@ -50,113 +109,14 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5" />
 
-            <TextView
-                android:id="@+id/photo_detail_left_photo_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/str_photo_detail_left_photo_label"
-                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/photo_detail_name_input" />
-
-            <TextView
-                android:id="@+id/photo_detail_right_photo_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/str_photo_detail_right_photo_label"
-                app:layout_constraintBaseline_toBaselineOf="@+id/photo_detail_left_photo_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-            <ImageButton
-                android:id="@+id/photo_detail_left_photo_preview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/str_photo_detail_left_photo_label"
-                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/photo_detail_left_photo_label"
-                app:layout_constraintWidth_percent="0.45"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
-
-            <ImageButton
-                android:id="@+id/photo_detail_right_photo_preview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/str_photo_detail_right_photo_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@+id/photo_detail_right_photo_label"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
-
-            <Button
-                android:id="@+id/photo_detail_left_photo_change_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="9dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/str_photo_detail_left_photo_change_button"
-                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/photo_detail_left_photo_preview" />
-
-            <Button
-                android:id="@+id/photo_detail_right_photo_change_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/str_photo_detail_right_photo_change_button"
-                app:layout_constraintBaseline_toBaselineOf="@+id/photo_detail_left_photo_change_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-            <Button
-                android:id="@+id/photo_detail_save_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/str_photo_detail_save_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/photo_detail_cancel_button" />
-
-            <Button
-                android:id="@+id/photo_detail_cancel_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/str_photo_detail_cancel_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/photo_detail_right_photo_change_button" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 
     <ImageView
         android:id="@+id/photo_detail_expanded_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        android:contentDescription="@string/photo_detail_description_zoom_touch_close" />
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/photo_detail_description_zoom_touch_close"
+        android:visibility="invisible" />
 
 </android.support.constraint.ConstraintLayout>

@@ -27,15 +27,21 @@ import project.karolina.com.cameraproject.helper.LocaleHelper;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public static final String APPLICATION_FOLDER_NAME = "hand_picture_app_folder";
+    public static final int ACTIVITY_RESULT_OK = -1;
+    public static final int ACTIVITY_RESULT_CANCEL = 0;
+    public static final String FOLDER_LEFT_NAME = "left";
+    public static final String FOLDER_RIGHT_NAME = "right";
+    public static final String ACTIVITY_RESULT_FOLDER_NAME = "ACTIVITY_RESULT_FOLDER_NAME";
+
     private static final String TAG = "HomeActivity";
-    public static final int REQUEST_DETAIL_PHOTO = 101;
+    public static final int REQUEST_NEW_PERSON = 101;
+    public static final int REQUEST_DETAIL_PHOTO = 102;
     private final int REQUEST_WRITE_PERMISSION = 1;
 
     private final List<Folder> folders = new ArrayList<>();
 
-    private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -48,9 +54,9 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Log.i(TAG, "onCreate: initialization home page");
 
-        recyclerView = findViewById(R.id.home_recycler_view);
+        RecyclerView recyclerView = findViewById(R.id.home_recycler_view);
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new FolderAdapter(HomeActivity.this, folders);
         recyclerView.setAdapter(adapter);
@@ -59,6 +65,7 @@ public class HomeActivity extends AppCompatActivity {
             if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     // explain user why permission in needed
+                    Log.d(TAG, "onCreate: show permission request information");
                 }
             }
             requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_PERMISSION);
@@ -93,9 +100,10 @@ public class HomeActivity extends AppCompatActivity {
     public void prepareFolderList() {
         folders.clear();
         String root = Environment.getExternalStorageDirectory().toString();
-        File directory = new File(root + "/" + PhotoDetailActivity.APPLICATION_FOLDER_NAME);
-        if(directory != null && directory.listFiles() != null) {
+        File directory = new File(root + "/" + APPLICATION_FOLDER_NAME);
+        if(directory.listFiles() != null) {
             for (File folder : directory.listFiles()) {
+                Log.d(TAG,"folder name: " + folder.getName() + ", is directory: " + folder.isDirectory());
                 if (folder.isDirectory()) {
                     Log.i(TAG, "prepareFolderList: directory found: " + folder.getName());
                     folders.add(new Folder(folder.getName()));
@@ -125,9 +133,8 @@ public class HomeActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_new_photo:
                 Log.i(TAG, "onOptionsItemSelected: selected to open the new picture activity");
-                Intent intent = new Intent(HomeActivity.this, PhotoDetailActivity.class);
-                intent.putExtra(PhotoDetailActivity.EXTRA_IS_NEW, true);
-                startActivityForResult(intent, REQUEST_DETAIL_PHOTO);
+                Intent intent = new Intent(HomeActivity.this, NewPersonActivity.class);
+                startActivityForResult(intent, REQUEST_NEW_PERSON);
                 result = true;
                 break;
             case R.id.action_language_english:
@@ -162,11 +169,17 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_DETAIL_PHOTO:
+            case REQUEST_NEW_PERSON:
                 Log.i(TAG, "onActivityResult: returned form detail with result: " + resultCode);
-                if(resultCode == PhotoDetailActivity.RESULT_OK) {
-                    Log.i(TAG, "onActivityResult: reload the list of folders");
+                if(resultCode == ACTIVITY_RESULT_OK) {
                     prepareFolderList();
+                    if(data != null) {
+                        String folderName = data.getStringExtra(ACTIVITY_RESULT_FOLDER_NAME);
+                        Log.i(TAG, "onClick: clicked edit for folder: " + folderName);
+                        Intent intent = new Intent(HomeActivity.this, PhotoDetailActivity.class);
+                        intent.putExtra(PhotoDetailActivity.PHOTO_DETAIL_FOLDER_NAME, folderName);
+                        startActivityForResult(intent, HomeActivity.REQUEST_DETAIL_PHOTO);
+                    }
                 }
                 break;
         }
