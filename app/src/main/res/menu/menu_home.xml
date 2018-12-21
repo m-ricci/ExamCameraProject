@@ -4,7 +4,7 @@
     tools:context="project.karolina.com.cameraproject.HomeActivity">
     <item
         android:id="@+id/action_new_photo"
-        android:icon="@android:drawable/ic_menu_camera"
+        android:icon="@android:drawable/ic_menu_add"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom" />

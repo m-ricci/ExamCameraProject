@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.File;
@@ -29,13 +29,13 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderView
     static class FolderViewHolder extends RecyclerView.ViewHolder {
 
         TextView folderTitle;
-        Button editButton, deleteButton;
+        ImageButton editButton, deleteButton;
 
         FolderViewHolder(@NonNull View itemView) {
             super(itemView);
             folderTitle = itemView.findViewById(R.id.folder_list_row_title);
             editButton = itemView.findViewById(R.id.folder_list_row_button_edit);
-            deleteButton = itemView.findViewById(R.id.folder_list_row_button_delete);
+            deleteButton = itemView.findViewById(R.id.image_list_row_button_delete);
         }
     }
 
@@ -54,14 +54,14 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderView
     @Override
     public void onBindViewHolder(@NonNull FolderViewHolder folderViewHolder, int i) {
         final Folder folder = folders.get(i);
-        folderViewHolder.folderTitle.setText(folder.getName().replaceAll("_", " "));
+        String name = folder.getName().substring(folder.getName().indexOf("_") +1);
+        folderViewHolder.folderTitle.setText(name.replaceAll("_", " "));
         folderViewHolder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "onClick: clicked edit for folder: " + folder.getName());
                 Intent intent = new Intent(homeActivity, PhotoDetailActivity.class);
-                intent.putExtra(PhotoDetailActivity.EXTRA_IS_NEW, false);
-                intent.putExtra(PhotoDetailActivity.EXTRA_NAME, folder.getName());
+                intent.putExtra(PhotoDetailActivity.PHOTO_DETAIL_FOLDER_NAME, folder.getName());
                 homeActivity.startActivityForResult(intent, HomeActivity.REQUEST_DETAIL_PHOTO);
             }
         });
@@ -69,14 +69,23 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.FolderView
             @Override
             public void onClick(View view) {
                 Log.i(TAG, "onClick: clicked delete for folder: " + folder.getName());
-                File directory = new File(Environment.getExternalStorageDirectory().toString() + "/" + PhotoDetailActivity.APPLICATION_FOLDER_NAME + "/" + folder.getName());
-                if(directory != null && directory.isDirectory()) {
+                File directory = new File(Environment.getExternalStorageDirectory().toString() + "/" + HomeActivity.APPLICATION_FOLDER_NAME + "/" + folder.getName());
+                if(directory.isDirectory()) {
                     if(directory.listFiles() != null) {
-                        for (File file : directory.listFiles()) {
-                            file.delete();
+                        for (File handDirectory : directory.listFiles()) {
+                            if(handDirectory != null && handDirectory.isDirectory()) {
+                                if(handDirectory.listFiles() != null) {
+                                    for(File photo : handDirectory.listFiles()) {
+                                        Log.d(TAG, "onClick: delete photo: " + photo.getName());
+                                        Log.d(TAG, "onClick: photo deleted with result: " + photo.delete());
+                                    }
+                                }
+                                Log.d(TAG, "onClick: delete folder: " + handDirectory.getName());
+                                Log.d(TAG, "onClick: side folder deleted with result: " + handDirectory.delete());
+                            }
                         }
                     }
-                    directory.delete();
+                    Log.d(TAG, "onClick: folder deleted with result: " + directory.delete());
                 }
                 homeActivity.prepareFolderList();
             }

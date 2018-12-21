@@ -4,8 +4,6 @@ public class Folder {
 
     private String name;
 
-    public Folder() {}
-
     public Folder(String name) {
         this.name = name;
     }

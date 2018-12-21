@@ -16,4 +16,10 @@
     <string name="str_snackbar_mandatory_photos">Le foto sono obbligatorie</string>
     <string name="str_snackbar_directory_exists">La cartella esiste già</string>
     <string name="str_snackbar_unable_save_photos">Impossibile salvare le foto</string>
+    <string name="str_new_person_input_description">Inserisci il nome della persona della quale vuoi acquisire le immagini delle mani</string>
+    <string name="str_new_person_name_input">Nome</string>
+    <string name="str_new_person_save_button">Salva</string>
+    <string name="str_new_person_cancel_button">Cancella</string>
+    <string name="str_photo_detail_add_button">Aggiungi</string>
+    <string name="str_image_list_row_photo">Immagine</string>
 </resources>
