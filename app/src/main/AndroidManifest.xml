@@ -6,6 +6,7 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -27,11 +28,24 @@
         </activity>
         <activity
             android:name=".PhotoDetailActivity"
-            android:screenOrientation="portrait" >
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".HomeActivity"/>
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
         </activity>
         <activity android:name=".NewPersonActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".HomeActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+        <activity
+            android:name=".CameraActivity"
+            android:label="@string/title_activity_camera"
+            android:parentActivityName=".PhotoDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="project.karolina.com.cameraproject.PhotoDetailActivity" />
         </activity>
     </application>
 

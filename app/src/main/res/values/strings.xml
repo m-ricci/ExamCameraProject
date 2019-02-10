@@ -26,4 +26,6 @@
     <string name="str_new_person_cancel_button">Cancel</string>
     <string name="str_photo_detail_add_button">Add</string>
     <string name="str_image_list_row_photo">Image</string>
+    <string name="title_activity_camera" translatable="false">Camera Project</string>
+    <string name="str_finger_placeholder" translatable="false">Finger placeholder</string>
 </resources>
