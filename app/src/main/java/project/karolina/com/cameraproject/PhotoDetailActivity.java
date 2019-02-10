@@ -147,6 +147,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.i(TAG, "onActivityResult: returned from activity");
         if(requestCode == REQUEST_CAMERA_ACTIVITY && resultCode == RESULT_OK) {
+            /*
             if(data != null && data.hasExtra(CameraActivity.RESULT_CAMERA_BITMAP) && data.hasExtra(CameraActivity.RESULT_CAMERA_SIDE)) {
                 Log.i(TAG, "onActivityResult: retrieving result from camera");
                 Side clickedSide = Side.values()[data.getIntExtra(CameraActivity.RESULT_CAMERA_SIDE, -1)];
@@ -167,6 +168,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
                     Log.e(TAG, "onActivityResult: unable to save image", e);
                 }
             }
+            */
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
