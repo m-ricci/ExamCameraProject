@@ -1,24 +1,17 @@
 package project.karolina.com.cameraproject;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -46,11 +39,11 @@ public class PhotoDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "PhotoDetailActivity";
 
-    private final int REQUEST_IMAGE_CAPTURE = 201;
+    private final int REQUEST_CAMERA_ACTIVITY = 202;
     public static final String PHOTO_DETAIL_FOLDER_NAME = "project.karolina.com.cameraproject.PhotoDetailActivity.FOLDER_NAME";
+    public static final String PHOTO_DETAIL_CLICKED_SIDE = "project.karolina.com.cameraproject.PhotoDetailActivity.CLICKED_SIDE";
 
     private String name;
-    private Side clickedSide;
 
     private List<Image> leftPhotoImageList = new ArrayList<>();
     private List<Image> rightPhotoImageList = new ArrayList<>();
@@ -79,14 +72,18 @@ public class PhotoDetailActivity extends AppCompatActivity {
         leftAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dispatchTakePictureIntent(Side.LEFT);
+                Intent camera = new Intent(PhotoDetailActivity.this, CameraActivity.class);
+                camera.putExtra(PHOTO_DETAIL_CLICKED_SIDE, Side.LEFT.ordinal());
+                PhotoDetailActivity.this.startActivityForResult(camera, REQUEST_CAMERA_ACTIVITY);
             }
         });
         ImageButton rightAddButton = findViewById(R.id.photo_detail_right_add_button);
         rightAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dispatchTakePictureIntent(Side.RIGHT);
+                Intent camera = new Intent(PhotoDetailActivity.this, CameraActivity.class);
+                camera.putExtra(PHOTO_DETAIL_CLICKED_SIDE, Side.RIGHT.ordinal());
+                PhotoDetailActivity.this.startActivityForResult(camera, REQUEST_CAMERA_ACTIVITY);
             }
         });
 
@@ -146,60 +143,29 @@ public class PhotoDetailActivity extends AppCompatActivity {
             rightPhotoListAdapter.notifyDataSetChanged();
     }
 
-    // https://stackoverflow.com/questions/24503968/camera-intent-not-returning-to-calling-activity
-
-    private void dispatchTakePictureIntent(Side side) {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Log.i(TAG, "dispatchTakePictureIntent: verify if it is possible to start the camera");
-        if(takePictureIntent.resolveActivity(getPackageManager()) != null && (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
-            Log.i(TAG, "dispatchTakePictureIntent: it is possible to start the camera");
-            clickedSide = side;
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.TITLE, "temp-picture");
-            values.put(MediaStore.Images.Media.DESCRIPTION, "temp-picture-description");
-            Uri imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-
-    // https://stackoverflow.com/questions/14053338/save-bitmap-in-android-as-jpeg-in-external-storage-in-a-folder
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.i(TAG, "onActivityResult: returned from activity");
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Log.i(TAG, "onActivityResult: returned from camera");
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, null, null, null);
-            if(cursor == null) {
-                Log.e(TAG, "onActivityResult: impossible to get the image", null);
-                return;
-            }
-            cursor.moveToLast();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String filePath = cursor.getString(columnIndex);
-            File source = new File(filePath);
-            cursor.close();
-            if(source.exists()) {
-                Log.i(TAG, "onActivityResult: path: " + filePath);
+        if(requestCode == REQUEST_CAMERA_ACTIVITY && resultCode == RESULT_OK) {
+            if(data != null && data.hasExtra(CameraActivity.RESULT_CAMERA_BITMAP) && data.hasExtra(CameraActivity.RESULT_CAMERA_SIDE)) {
+                Log.i(TAG, "onActivityResult: retrieving result from camera");
+                Side clickedSide = Side.values()[data.getIntExtra(CameraActivity.RESULT_CAMERA_SIDE, -1)];
+                byte[] byteArray = data.getByteArrayExtra(CameraActivity.RESULT_CAMERA_BITMAP);
+                Bitmap photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
                 String root = Environment.getExternalStorageDirectory().toString();
                 Long timestamp = System.currentTimeMillis()/1000;
                 String folderPath = root + "/" + HomeActivity.APPLICATION_FOLDER_NAME + "/" + name + "/";
                 folderPath += clickedSide == Side.LEFT ? HomeActivity.FOLDER_LEFT_NAME : HomeActivity.FOLDER_RIGHT_NAME;
-
                 try {
                     File file = new File(folderPath, timestamp.toString() + ".jpg");
                     FileOutputStream outPhoto = new FileOutputStream(file);
-                    Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outPhoto);
+                    photo.compress(Bitmap.CompressFormat.JPEG, 100, outPhoto);
                     outPhoto.flush();
                     outPhoto.close();
                     initImageList(clickedSide);
                 } catch (Exception e) {
                     Log.e(TAG, "onActivityResult: unable to save image", e);
                 }
-                Log.d(TAG, "onActivityResult: source file deleted with result: " + source.delete());
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
