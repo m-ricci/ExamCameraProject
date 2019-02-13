@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-feature android:name="android.hardware.camera2.full" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -40,6 +42,7 @@
         </activity>
         <activity
             android:name=".CameraActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_camera"
             android:parentActivityName=".PhotoDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
