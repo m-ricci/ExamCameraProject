@@ -69,11 +69,16 @@ public class PhotoDetailActivity extends AppCompatActivity {
         TextView nameValue = findViewById(R.id.photo_detail_name_value);
         nameValue.setText(name.substring(name.indexOf("_")+1).replaceAll("_", " "));
         ImageButton leftAddButton = findViewById(R.id.photo_detail_left_add_button);
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        final String folderPath = root + "/" + HomeActivity.APPLICATION_FOLDER_NAME + "/" + name + "/";
+
         leftAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent camera = new Intent(PhotoDetailActivity.this, CameraActivity.class);
                 camera.putExtra(PHOTO_DETAIL_CLICKED_SIDE, Side.LEFT.ordinal());
+                camera.putExtra(PHOTO_DETAIL_FOLDER_NAME, folderPath + HomeActivity.FOLDER_LEFT_NAME);
                 PhotoDetailActivity.this.startActivityForResult(camera, REQUEST_CAMERA_ACTIVITY);
             }
         });
@@ -83,6 +88,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent camera = new Intent(PhotoDetailActivity.this, CameraActivity.class);
                 camera.putExtra(PHOTO_DETAIL_CLICKED_SIDE, Side.RIGHT.ordinal());
+                camera.putExtra(PHOTO_DETAIL_FOLDER_NAME, folderPath + HomeActivity.FOLDER_RIGHT_NAME);
                 PhotoDetailActivity.this.startActivityForResult(camera, REQUEST_CAMERA_ACTIVITY);
             }
         });
@@ -147,28 +153,11 @@ public class PhotoDetailActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.i(TAG, "onActivityResult: returned from activity");
         if(requestCode == REQUEST_CAMERA_ACTIVITY && resultCode == RESULT_OK) {
-            /*
-            if(data != null && data.hasExtra(CameraActivity.RESULT_CAMERA_BITMAP) && data.hasExtra(CameraActivity.RESULT_CAMERA_SIDE)) {
+            if(data != null && data.hasExtra(CameraActivity.RESULT_CAMERA_SIDE)) {
                 Log.i(TAG, "onActivityResult: retrieving result from camera");
                 Side clickedSide = Side.values()[data.getIntExtra(CameraActivity.RESULT_CAMERA_SIDE, -1)];
-                byte[] byteArray = data.getByteArrayExtra(CameraActivity.RESULT_CAMERA_BITMAP);
-                Bitmap photo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-                String root = Environment.getExternalStorageDirectory().toString();
-                Long timestamp = System.currentTimeMillis()/1000;
-                String folderPath = root + "/" + HomeActivity.APPLICATION_FOLDER_NAME + "/" + name + "/";
-                folderPath += clickedSide == Side.LEFT ? HomeActivity.FOLDER_LEFT_NAME : HomeActivity.FOLDER_RIGHT_NAME;
-                try {
-                    File file = new File(folderPath, timestamp.toString() + ".jpg");
-                    FileOutputStream outPhoto = new FileOutputStream(file);
-                    photo.compress(Bitmap.CompressFormat.JPEG, 100, outPhoto);
-                    outPhoto.flush();
-                    outPhoto.close();
-                    initImageList(clickedSide);
-                } catch (Exception e) {
-                    Log.e(TAG, "onActivityResult: unable to save image", e);
-                }
+                initImageList(clickedSide);
             }
-            */
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
