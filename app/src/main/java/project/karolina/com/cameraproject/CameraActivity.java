@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -206,7 +207,9 @@ public class CameraActivity extends AppCompatActivity {
             captureBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
+            Log.d(TAG, "takePicture: photo rotation: " + rotation);
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+            Log.d(TAG, "takePicture: orientation: " + ORIENTATIONS.get(rotation));
 
             final Long timestamp = System.currentTimeMillis()/1000;
             final File file = new File(folderName, timestamp.toString() + ".jpg");
@@ -329,11 +332,20 @@ public class CameraActivity extends AppCompatActivity {
             assert map != null;
             imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
             // Add permission for camera and let user grant the permission
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
                 return;
             }
             manager.openCamera(cameraId, stateCallback, null);
+
+            // place imageView with hand placeholder
+            ImageView fingerPlaceholder = findViewById(R.id.finger_placeholder);
+            fingerPlaceholder.setImageDrawable(getDrawable(
+                    side == PhotoDetailActivity.Side.LEFT
+                            ? R.drawable.left_hand_placeholder
+                            : R.drawable.right_hand_placeholder
+            ));
+
         } catch (CameraAccessException e) {
             Log.e(TAG, "openCamera: ", e);
         }
