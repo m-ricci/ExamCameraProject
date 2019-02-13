@@ -37,7 +37,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -70,7 +69,6 @@ public class CameraActivity extends AppCompatActivity {
     protected CameraDevice cameraDevice;
     protected CameraCaptureSession cameraCaptureSessions;
     private Size imageDimension;
-    private ImageReader imageReader;
     private HandlerThread mBackgroundThread;
 
     private TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
@@ -225,8 +223,6 @@ public class CameraActivity extends AppCompatActivity {
                         buffer.get(bytes);
                         Log.i(TAG, "onImageAvailable: performsaving");
                         save(bytes);
-                    } catch (FileNotFoundException e) {
-                        Log.e(TAG, "onImageAvailable: ", e);
                     } catch (IOException e) {
                         Log.e(TAG, "onImageAvailable: ", e);
                     }

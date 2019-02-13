@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -27,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
