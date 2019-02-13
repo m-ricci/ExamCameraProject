@@ -42,8 +42,17 @@
         </activity>
         <activity
             android:name=".CameraActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_camera"
+            android:parentActivityName=".PhotoDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="project.karolina.com.cameraproject.PhotoDetailActivity" />
+        </activity>
+        <activity
+            android:name=".HandPhotoPreviewActivity"
+            android:label="@string/title_activity_hand_photo_preview"
             android:parentActivityName=".PhotoDetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

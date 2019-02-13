@@ -1,5 +1,6 @@
 package project.karolina.com.cameraproject.adapter;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.os.Environment;
@@ -14,6 +15,7 @@ import android.widget.ImageButton;
 import java.io.File;
 import java.util.List;
 
+import project.karolina.com.cameraproject.HandPhotoPreviewActivity;
 import project.karolina.com.cameraproject.HomeActivity;
 import project.karolina.com.cameraproject.PhotoDetailActivity;
 import project.karolina.com.cameraproject.R;
@@ -64,7 +66,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         imageViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                photoDetailActivity.zoomImageFromThumb(imageViewHolder.imageView, BitmapFactory.decodeFile(folderPath + image.getPath()));
+                Intent intent = new Intent(photoDetailActivity, HandPhotoPreviewActivity.class);
+                intent.putExtra(HandPhotoPreviewActivity.FILE_NAME, folderPath + image.getPath());
+                photoDetailActivity.startActivity(intent);
             }
         });
         imageViewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
