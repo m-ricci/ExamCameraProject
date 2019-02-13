@@ -28,4 +28,6 @@
     <string name="str_image_list_row_photo">Image</string>
     <string name="title_activity_camera" translatable="false">Camera Project</string>
     <string name="str_finger_placeholder" translatable="false">Finger placeholder</string>
+    <string name="title_activity_hand_photo_preview" translatable="false">Camera Project</string>
+    <string name="str_hand_photo_preview" translatable="false">Hand photo preview</string>
 </resources>

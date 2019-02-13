@@ -1,14 +1,7 @@
 package project.karolina.com.cameraproject;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -20,9 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -46,9 +37,6 @@ public class PhotoDetailActivity extends AppCompatActivity {
     private List<Image> leftPhotoImageList = new ArrayList<>();
     private List<Image> rightPhotoImageList = new ArrayList<>();
     private RecyclerView.Adapter leftPhotoListAdapter, rightPhotoListAdapter;
-
-    private Animator animator;
-    private int shortAnimationDuration;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -109,8 +97,6 @@ public class PhotoDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
             actionBar.setDisplayHomeAsUpEnabled(true);
-
-        shortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
     }
 
     @Override
@@ -158,94 +144,6 @@ public class PhotoDetailActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    // https://developer.android.com/training/animation/zoom#java
-
-    public void zoomImageFromThumb(final View viewThumbnail, Bitmap image) {
-        if(animator != null)
-            animator.cancel();
-        final ImageView expandedImageView = findViewById(R.id.photo_detail_expanded_image);
-        expandedImageView.setImageBitmap(image);
-        final Rect startBounds = new Rect();
-        final Rect finalBounds = new Rect();
-        final Point globalOffset = new Point();
-        viewThumbnail.getGlobalVisibleRect(startBounds);
-        findViewById(R.id.photo_detail_layout).getGlobalVisibleRect(finalBounds, globalOffset);
-        startBounds.offset(-globalOffset.x, -globalOffset.y);
-        finalBounds.offset(-globalOffset.x, -globalOffset.y);
-        float startScale;
-        if((float)finalBounds.width()/finalBounds.height() > (float)startBounds.width()/startBounds.height()) {
-            startScale = (float)startBounds.width()/startBounds.height();
-            float startWidth = startScale*finalBounds.width();
-            float deltaWidth = (startWidth-startBounds.width())/2;
-            startBounds.left -= deltaWidth;
-            startBounds.right += deltaWidth;
-        } else {
-            startScale = (float)startBounds.width()/finalBounds.width();
-            float startHeight = startScale*finalBounds.height();
-            float deltaHeight = (startHeight-startBounds.height())/2;
-            startBounds.top -= deltaHeight;
-            startBounds.bottom += deltaHeight;
-        }
-        viewThumbnail.setAlpha(0f);
-        expandedImageView.setVisibility(View.VISIBLE);
-        expandedImageView.setPivotX(0f);
-        expandedImageView.setPivotY(0f);
-        AnimatorSet set = new AnimatorSet();
-        set
-                .play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left, finalBounds.left))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top, finalBounds.top))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScale, 1f))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScale, 1f));
-        set.setDuration(shortAnimationDuration);
-        set.setInterpolator(new DecelerateInterpolator());
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                animator = null;
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                animator = null;
-            }
-        });
-        set.start();
-        animator = set;
-        final float startScaleFinal = startScale;
-        expandedImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(animator != null)
-                    animator.cancel();
-                AnimatorSet set = new AnimatorSet();
-                set
-                        .play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left))
-                        .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top))
-                        .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScaleFinal))
-                        .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScaleFinal));
-                set.setDuration(shortAnimationDuration);
-                set.setInterpolator(new DecelerateInterpolator());
-                set.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        viewThumbnail.setAlpha(1f);
-                        expandedImageView.setVisibility(View.GONE);
-                        animator = null;
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        viewThumbnail.setAlpha(1f);
-                        expandedImageView.setVisibility(View.GONE);
-                        animator = null;
-                    }
-                });
-                set.start();
-                animator = set;
-            }
-        });
     }
 
 }
