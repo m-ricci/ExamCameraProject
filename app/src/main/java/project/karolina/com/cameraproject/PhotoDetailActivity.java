@@ -1,12 +1,15 @@
 package project.karolina.com.cameraproject;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +34,8 @@ public class PhotoDetailActivity extends AppCompatActivity {
     private final int REQUEST_CAMERA_ACTIVITY = 202;
     public static final String PHOTO_DETAIL_FOLDER_NAME = "project.karolina.com.cameraproject.PhotoDetailActivity.FOLDER_NAME";
     public static final String PHOTO_DETAIL_CLICKED_SIDE = "project.karolina.com.cameraproject.PhotoDetailActivity.CLICKED_SIDE";
+    public static final String PHOTO_DETAIL_BACKGROUND_TYPE = "project.karolina.com.cameraproject.PhotoDetailActivity.PHOTO_DETAIL_BACKGROUND_TYPE";
+    public static final String PHOTO_DETAIL_PHONE_NAME = "project.karolina.com.cameraproject.PhotoDetailActivity.PHOTO_DETAIL_PHONE_NAME";
 
     private String name;
 
@@ -62,20 +67,14 @@ public class PhotoDetailActivity extends AppCompatActivity {
         leftAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent camera = new Intent(PhotoDetailActivity.this, CameraActivity.class);
-                camera.putExtra(PHOTO_DETAIL_CLICKED_SIDE, Side.LEFT.ordinal());
-                camera.putExtra(PHOTO_DETAIL_FOLDER_NAME, folderPath + HomeActivity.FOLDER_LEFT_NAME);
-                PhotoDetailActivity.this.startActivityForResult(camera, REQUEST_CAMERA_ACTIVITY);
+                openPhotoBackgroundDecision(Side.LEFT, folderPath + HomeActivity.FOLDER_LEFT_NAME);
             }
         });
         ImageButton rightAddButton = findViewById(R.id.photo_detail_right_add_button);
         rightAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent camera = new Intent(PhotoDetailActivity.this, CameraActivity.class);
-                camera.putExtra(PHOTO_DETAIL_CLICKED_SIDE, Side.RIGHT.ordinal());
-                camera.putExtra(PHOTO_DETAIL_FOLDER_NAME, folderPath + HomeActivity.FOLDER_RIGHT_NAME);
-                PhotoDetailActivity.this.startActivityForResult(camera, REQUEST_CAMERA_ACTIVITY);
+                openPhotoBackgroundDecision(Side.RIGHT, folderPath + HomeActivity.FOLDER_RIGHT_NAME);
             }
         });
 
@@ -99,6 +98,34 @@ public class PhotoDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    private void openPhotoBackgroundDecision(final Side side, final String folder) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PhotoDetailActivity.this);
+        builder.setMessage(R.string.str_new_photo_background_selection);
+        builder.setCancelable(true);
+        builder.setNegativeButton(R.string.str_new_photo_background_dark, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivityCamera(side, folder, Background.DARK);
+            }
+        });
+        builder.setPositiveButton(R.string.str_new_photo_background_light, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivityCamera(side, folder, Background.LIGHT);
+            }
+        });
+        builder.create().show();
+    }
+
+    private void startActivityCamera(Side side, String folder, Background background) {
+        Intent camera = new Intent(PhotoDetailActivity.this, CameraActivity.class);
+        camera.putExtra(PHOTO_DETAIL_CLICKED_SIDE, side.ordinal());
+        camera.putExtra(PHOTO_DETAIL_FOLDER_NAME, folder);
+        camera.putExtra(PHOTO_DETAIL_BACKGROUND_TYPE, background.getName());
+        camera.putExtra(PHOTO_DETAIL_PHONE_NAME, "_" + Build.MANUFACTURER + "_" + Build.MODEL + "_" + Build.VERSION.RELEASE);
+        PhotoDetailActivity.this.startActivityForResult(camera, REQUEST_CAMERA_ACTIVITY);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -112,6 +139,21 @@ public class PhotoDetailActivity extends AppCompatActivity {
 
     public enum Side {
         LEFT, RIGHT
+    }
+
+    public enum Background {
+        DARK("_dark"), LIGHT("_light");
+
+        Background(String name) {
+            this.name = name;
+        }
+
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
     }
 
     public void initImageList(Side side) {

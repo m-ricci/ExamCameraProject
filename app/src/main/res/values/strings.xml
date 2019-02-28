@@ -30,4 +30,7 @@
     <string name="str_finger_placeholder" translatable="false">Finger placeholder</string>
     <string name="title_activity_hand_photo_preview" translatable="false">Camera Project</string>
     <string name="str_hand_photo_preview" translatable="false">Hand photo preview</string>
+    <string name="str_new_photo_background_selection">Select the type of background for the image</string>
+    <string name="str_new_photo_background_dark">Dark</string>
+    <string name="str_new_photo_background_light">Light</string>
 </resources>
