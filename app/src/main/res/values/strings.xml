@@ -30,7 +30,16 @@
     <string name="str_finger_placeholder" translatable="false">Finger placeholder</string>
     <string name="title_activity_hand_photo_preview" translatable="false">Camera Project</string>
     <string name="str_hand_photo_preview" translatable="false">Hand photo preview</string>
-    <string name="str_new_photo_background_selection">Select the type of background for the image</string>
+    <string name="str_new_photo_background_selection">New photo background and session selection</string>
     <string name="str_new_photo_background_dark">Dark</string>
     <string name="str_new_photo_background_light">Light</string>
+    <string name="str_new_photo_background_color">Colored</string>
+    <string name="str_new_photo_session_1">Session 1</string>
+    <string name="str_new_photo_session_2">Session 2</string>
+    <string name="str_new_photo_description_background">Select the actual photo background</string>
+    <string name="str_new_photo_description_session">Select the session</string>
+    <string name="str_cancel_button">Cancel</string>
+    <string name="str_confirm_button">Confirm</string>
+    <string name="str_error_message_missing_background">Please select a valid background</string>
+    <string name="str_error_message_missing_session">Please select a valid session</string>
 </resources>

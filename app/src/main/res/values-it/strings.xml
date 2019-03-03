@@ -22,7 +22,16 @@
     <string name="str_new_person_cancel_button">Cancella</string>
     <string name="str_photo_detail_add_button">Aggiungi</string>
     <string name="str_image_list_row_photo">Immagine</string>
-    <string name="str_new_photo_background_selection">Seleziona il tipo di sfondo per l\'immagine</string>
     <string name="str_new_photo_background_dark">Scuro</string>
     <string name="str_new_photo_background_light">Chiaro</string>
+    <string name="str_new_photo_background_color">Colorato</string>
+    <string name="str_new_photo_session_1">Sessione 1</string>
+    <string name="str_new_photo_session_2">Sessione 2</string>
+    <string name="str_new_photo_description_background">Seleziona lo sfondo attuale della foto</string>
+    <string name="str_new_photo_description_session">Seleziona la sessione</string>
+    <string name="str_new_photo_background_selection">Selezione sfondo e sessione per nuova photo</string>
+    <string name="str_cancel_button">Cancella</string>
+    <string name="str_confirm_button">Conferma</string>
+    <string name="str_error_message_missing_background">Selezionare uno sfondo valido</string>
+    <string name="str_error_message_missing_session">Selezionare una sessione valida</string>
 </resources>
