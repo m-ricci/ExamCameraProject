@@ -14,10 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,12 +40,16 @@ public class PhotoDetailActivity extends AppCompatActivity {
     public static final String PHOTO_DETAIL_CLICKED_SIDE = "project.karolina.com.cameraproject.PhotoDetailActivity.CLICKED_SIDE";
     public static final String PHOTO_DETAIL_BACKGROUND_TYPE = "project.karolina.com.cameraproject.PhotoDetailActivity.PHOTO_DETAIL_BACKGROUND_TYPE";
     public static final String PHOTO_DETAIL_PHONE_NAME = "project.karolina.com.cameraproject.PhotoDetailActivity.PHOTO_DETAIL_PHONE_NAME";
+    public static final String PHOTO_DETAIL_SESSION_NAME = "project.karolina.com.cameraproject.PhotoDetailActivity.PHOTO_DETAIL_SESSION_NAME";
 
     private String name;
 
     private List<Image> leftPhotoImageList = new ArrayList<>();
     private List<Image> rightPhotoImageList = new ArrayList<>();
     private RecyclerView.Adapter leftPhotoListAdapter, rightPhotoListAdapter;
+
+    private Integer selectedBackground = null;
+    private Integer selectedSession = null;
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -100,28 +108,52 @@ public class PhotoDetailActivity extends AppCompatActivity {
 
     private void openPhotoBackgroundDecision(final Side side, final String folder) {
         AlertDialog.Builder builder = new AlertDialog.Builder(PhotoDetailActivity.this);
-        builder.setMessage(R.string.str_new_photo_background_selection);
+        builder.setTitle(R.string.str_new_photo_background_selection);
         builder.setCancelable(true);
-        builder.setNegativeButton(R.string.str_new_photo_background_dark, new DialogInterface.OnClickListener() {
+        LayoutInflater inflater = PhotoDetailActivity.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.photo_detail_activity_dialog_new_photo, null);
+        builder.setView(dialogView);
+
+        final RadioGroup backgroundGroup = dialogView.findViewById(R.id.background_selection);
+        final RadioGroup sessionGroup = dialogView.findViewById(R.id.session_selection);
+
+        builder.setNegativeButton(R.string.str_cancel_button, null);
+        builder.setPositiveButton(R.string.str_confirm_button, null);
+
+        final AlertDialog newPhotoDialog = builder.create();
+
+        newPhotoDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                startActivityCamera(side, folder, Background.DARK);
+            public void onShow(DialogInterface dialogInterface) {
+                Button positiveButton = newPhotoDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+                positiveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Background background = detectBackground(backgroundGroup.getCheckedRadioButtonId());
+                        Session session = detectSession(sessionGroup.getCheckedRadioButtonId());
+                        if(background == null)
+                            Toast.makeText(PhotoDetailActivity.this, R.string.str_error_message_missing_background, Toast.LENGTH_SHORT).show();
+                        else if(session == null)
+                            Toast.makeText(PhotoDetailActivity.this, R.string.str_error_message_missing_session, Toast.LENGTH_SHORT).show();
+                        else {
+                            newPhotoDialog.dismiss();
+                            startActivityCamera(side, folder, background, session);
+                        }
+                    }
+                });
             }
         });
-        builder.setPositiveButton(R.string.str_new_photo_background_light, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                startActivityCamera(side, folder, Background.LIGHT);
-            }
-        });
-        builder.create().show();
+
+        newPhotoDialog.show();
     }
 
-    private void startActivityCamera(Side side, String folder, Background background) {
+    private void startActivityCamera(Side side, String folder, Background background, Session session) {
         Intent camera = new Intent(PhotoDetailActivity.this, CameraActivity.class);
         camera.putExtra(PHOTO_DETAIL_CLICKED_SIDE, side.ordinal());
         camera.putExtra(PHOTO_DETAIL_FOLDER_NAME, folder);
         camera.putExtra(PHOTO_DETAIL_BACKGROUND_TYPE, background.getName());
+        camera.putExtra(PHOTO_DETAIL_SESSION_NAME, session.getName());
         camera.putExtra(PHOTO_DETAIL_PHONE_NAME, "_" + Build.MANUFACTURER + "_" + Build.MODEL + "_" + Build.VERSION.RELEASE);
         PhotoDetailActivity.this.startActivityForResult(camera, REQUEST_CAMERA_ACTIVITY);
     }
@@ -142,7 +174,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
     }
 
     public enum Background {
-        DARK("_dark"), LIGHT("_light");
+        DARK("_dark"), LIGHT("_light"), COLOR("_color");
 
         Background(String name) {
             this.name = name;
@@ -154,6 +186,53 @@ public class PhotoDetailActivity extends AppCompatActivity {
             return name;
         }
 
+    }
+
+    public enum Session {
+        SESSION_1("_session1"), SESSION_2("_session2");
+
+        Session(String name) {
+            this.name = name;
+        }
+
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+    }
+
+    private Background detectBackground(int radioButtonId) {
+        Background result;
+        switch (radioButtonId) {
+            case R.id.background_dark:
+                result = Background.DARK;
+                break;
+            case R.id.background_light:
+                result = Background.LIGHT;
+                break;
+            case R.id.background_color:
+                result = Background.COLOR;
+                break;
+            default:
+                result = null;
+        }
+        return result;
+    }
+
+    private Session detectSession(int radioButtonId) {
+        Session result;
+        switch (radioButtonId) {
+            case R.id.session_1_radio:
+                result = Session.SESSION_1;
+                break;
+            case R.id.session_2_radio:
+                result = Session.SESSION_2;
+                break;
+            default:
+                result = null;
+        }
+        return result;
     }
 
     public void initImageList(Side side) {

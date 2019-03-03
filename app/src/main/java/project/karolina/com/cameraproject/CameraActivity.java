@@ -62,6 +62,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private String folderName;
     private String background;
+    private String session;
     private String phoneModel;
     private PhotoDetailActivity.Side side;
 
@@ -136,6 +137,7 @@ public class CameraActivity extends AppCompatActivity {
         side = PhotoDetailActivity.Side.values()[intent.getIntExtra(PhotoDetailActivity.PHOTO_DETAIL_CLICKED_SIDE, -1)];
         folderName = intent.getStringExtra(PhotoDetailActivity.PHOTO_DETAIL_FOLDER_NAME);
         background = intent.getStringExtra(PhotoDetailActivity.PHOTO_DETAIL_BACKGROUND_TYPE);
+        session = intent.getStringExtra(PhotoDetailActivity.PHOTO_DETAIL_SESSION_NAME);
         phoneModel = intent.getStringExtra(PhotoDetailActivity.PHOTO_DETAIL_PHONE_NAME);
 
         textureView = findViewById(R.id.camera_texture_view);
@@ -214,7 +216,7 @@ public class CameraActivity extends AppCompatActivity {
             Log.d(TAG, "takePicture: orientation: " + ORIENTATIONS.get(rotation));
 
             final Long timestamp = System.currentTimeMillis()/1000;
-            final File file = new File(folderName, timestamp.toString() + background + phoneModel + ".jpg");
+            final File file = new File(folderName, timestamp.toString() + background + session + phoneModel + ".jpg");
 
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
 

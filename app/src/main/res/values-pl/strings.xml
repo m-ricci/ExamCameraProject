@@ -22,7 +22,16 @@
     <string name="str_new_person_cancel_button">Anuluj</string>
     <string name="str_photo_detail_add_button">Dodaj</string>
     <string name="str_image_list_row_photo">Obraz</string>
-    <string name="str_new_photo_background_selection">Wybierz kolor tła</string>
+    <string name="str_new_photo_background_selection">Wybór tła i sesji dla nowego zdjęcia</string>
     <string name="str_new_photo_background_dark">Ciemne</string>
     <string name="str_new_photo_background_light">Jasne</string>
+    <string name="str_new_photo_background_color">Kolorowe</string>
+    <string name="str_new_photo_session_1">Sesja 1</string>
+    <string name="str_new_photo_session_2">Sesja 2</string>
+    <string name="str_new_photo_description_background">Wybjerz tło nowego zdjęcia</string>
+    <string name="str_new_photo_description_session">Wybjerz sesję</string>
+    <string name="str_cancel_button">Anuluj</string>
+    <string name="str_confirm_button">Zatwierdz</string>
+    <string name="str_error_message_missing_background">Please select a valid background</string>
+    <string name="str_error_message_missing_session">Please select a valid session</string>
 </resources>
