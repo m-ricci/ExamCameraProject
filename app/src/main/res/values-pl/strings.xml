@@ -32,6 +32,6 @@
     <string name="str_new_photo_description_session">Wybjerz sesję</string>
     <string name="str_cancel_button">Anuluj</string>
     <string name="str_confirm_button">Zatwierdz</string>
-    <string name="str_error_message_missing_background">Please select a valid background</string>
-    <string name="str_error_message_missing_session">Please select a valid session</string>
+    <string name="str_error_message_missing_session">Proszę wybrać odpowiednią sekcję</string>
+    <string name="str_error_message_missing_background">Proszę wybrać odpowiednie tło</string>
 </resources>
